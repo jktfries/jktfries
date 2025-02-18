@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Photo Gallery</title>
+    <style>
+        /* Basic Styling - Customize as needed */
+        #image {
+            width: 400px;
+            height: 300px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1.2em;
+            border: 2px solid transparent; /* For focus indicator */
+        }
+
+        .thumbnail-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .thumbnail {
+            width: 100px;
+            height: 75px;
+            cursor: pointer;
+            border: 2px solid transparent; /* For focus indicator */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="image">Hover over an image below to display here.</div>
+
+    <div class="thumbnail-container">
+        <figure> <img src="Skye_Final_Stage_BLUE.jpg" alt="Skye" class="thumbnail"></figure>
+        <figure> <img src="you_are_doing_great.jpg" alt="you are doing great" class="thumbnail"></figure>
+        <figure> <img src="Resident_Evil_Retribution_Moving_poster.jpg" alt="RE3" class="thumbnail"></figure>
+        <figure> <img src="Skye_Final_Stage.jpg" alt="skye crying" class="thumbnail"></figure>
+        <figure> <img src="SMILE_2_Film_Poster.jpg" alt="film poster" class="thumbnail"></figure>
+        <figure> <img src="lwwymd.jpg" alt="taylor swift" class="thumbnail"></figure>
+    </div>
+
+    <script>
+        function upDate(previewPic) {
+            document.getElementById("image").textContent = previewPic.alt;
+            document.getElementById("image").style.backgroundImage = "url(" + previewPic.src + ")";
+        }
+
+        function undo() {
+            document.getElementById("image").style.backgroundImage = "url('')";
+            document.getElementById("image").textContent = "Hover over an image below to display here.";
+        }
+
+        function addTabindex() {
+            console.log("addTabindex function called!");
+            const thumbnails = document.querySelectorAll(".thumbnail");
+
+            for (let i = 0; i < thumbnails.length; i++) {
+                thumbnails[i].tabIndex = i;
+            }
+        }
+
+
+        window.addEventListener("load", addTabindex);
+
+        const thumbnails = document.querySelectorAll(".thumbnail");
+
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener("mouseover", function() {
+                upDate(this);
+            });
+
+            thumbnail.addEventListener("mouseout", undo);
+
+            thumbnail.addEventListener("focus", function() {
+                console.log(this.alt + " gained focus");
+                this.style.borderColor = "red"; // Example: Red border on focus
+                document.getElementById("image").textContent = this.alt; // Update main image text on focus
+            });
+
+            thumbnail.addEventListener("blur", function() {
+                console.log(this.alt + " lost focus");
+                this.style.borderColor = "transparent"; // Reset border on blur
+            });
+
+
+            thumbnail.addEventListener("keydown", function(event) {
+               if (event.key === "Enter") { // Check if Enter key was pressed
+                   upDate(this);
+               }
+            });
+        });
+    </script>
+
+</body>
+</html>
